@@ -6,6 +6,9 @@ mySQL 8 and phpMyAdmin
 Use docker-compose to rum yours containers
 ```sh
 docker-compose build
+```
+and
+```sh
 docker-compose up -d
 ```
 
