@@ -1,14 +1,4 @@
-# Simple PHP Docker with MYSQL and phpMyAdmin
+# Simple LandingPage
 
-This is a simple setup for using the docker with php 7.3 Apache, mySQL 8 and phpMyAdmin
+This is a simple landingpage with PHP 7.3 and bootstap 4.0
 
-Use docker-compose to rum yours containers
-```sh
-docker-compose build
-```
-and
-```sh
-docker-compose up -d
-```
-
-### Enjoy!
