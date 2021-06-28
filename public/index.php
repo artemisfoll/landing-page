@@ -1,14 +1,23 @@
 <?php
 
-require_once (dirname(__FILE__, 2) . "/src/config/config.php");
-
-$uri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
-if ($uri === '/' || $uri === '' || $uri === 'index.php'){
-    $uri = '/home';
-}
+require_once __DIR__.'/../vendor/autoload.php';
 
 
-require_once(CONTROLLER_PATH . "{$uri}_controller.php");
+use Src\Http\Router;
+use Src\Utils\View;
 
-//require_once (CONTROLLER_PATH . '/home_controller.php');
+define('URL', 'http://localhost');
 
+//Define o valor padrão das variaveis
+View::init([
+    'URL' => URL
+]);
+
+//Inicia o Router
+$obRouter = new Router(URL);
+
+//Inclui as rotas de páginas
+include __DIR__.'/../src/routes/pages.php';
+
+//Imprime o Response da rota
+$obRouter->run()->sendResponse();

@@ -1,0 +1,8 @@
+{
+	"name":"landing",
+	"autoload": {
+		"psr-4": {
+			"Src\\": "src/"
+		}
+	}
+}
