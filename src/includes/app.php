@@ -2,9 +2,14 @@
 
 require_once __DIR__. '/../../vendor/autoload.php';
 
+use Src\Http\Middleware\Maintenance;
+use Src\Http\Middleware\Queue;
+use Src\Http\Middleware\RequireAdminLogin;
+use Src\Http\Middleware\RequireAdminLogout;
 use Src\Utils\View;
 use WilliamCosta\DotEnv\Environment;
 use WilliamCosta\DatabaseManager\Database;
+
 
 //Carrega variaveis de ambiente
 Environment::load(__DIR__.'/../');
@@ -24,4 +29,16 @@ define('URL', getenv('URL'));
 //Define o valor padrão das variaveis
 View::init([
     'URL' => URL
+]);
+
+//Define o mapeamento de middlewares
+Queue::setMap([
+    'maintenance' => Maintenance::class,
+    'required-admin-logout' => RequireAdminLogout::class,
+    'required-admin-login' => RequireAdminLogin::class
+]);
+
+//Define o mapeamento de middlewares Padrões (todas as rotas)
+Queue::setDefault([
+    'maintenance'
 ]);

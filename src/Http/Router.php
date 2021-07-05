@@ -6,6 +6,7 @@ namespace Src\Http;
 use \Closure;
 use \Exception;
 use \ReflectionFunction;
+use Src\Http\Middleware\Queue;
 
 class Router
 {
@@ -37,7 +38,7 @@ class Router
      * Método responsavel por iniciar a classe
      * @param string $url
      */
-    public function __construct($url)
+    public function __construct(string $url)
     {
         $this->request = new Request($this);
         $this->url     = $url;
@@ -61,7 +62,7 @@ class Router
      * @param string $route
      * @param array $params
      */
-    private function addRoute($method, $route, $params = [])
+    private function addRoute(string $method, string $route, array $params = [])
     {
         //Validação dos Parametros
         foreach ($params as $key => $value) {
@@ -71,6 +72,9 @@ class Router
                 continue;
             }
         }
+
+        //Middlewares da rota
+        $params['middlewares'] = $params['middlewares'] ?? [];
 
         //Variaveis da rota
         $params['variables'] = [];
@@ -96,7 +100,7 @@ class Router
      * @param string $route
      * @param array $params
      */
-    public function get($route, $params = [])
+    public function get(string $route, array $params = [])
     {
         $this->addRoute('GET', $route, $params);
     }
@@ -116,7 +120,7 @@ class Router
      * @param string $route
      * @param array $params
      */
-    public function put($route, $params = [])
+    public function put(string $route, array $params = [])
     {
         $this->addRoute('PUT', $route, $params);
     }
@@ -126,7 +130,7 @@ class Router
      * @param string $route
      * @param array $params
      */
-    public function delete($route, $params = [])
+    public function delete(string $route, array $params = [])
     {
         $this->addRoute('DELETE', $route, $params);
     }
@@ -135,7 +139,7 @@ class Router
      * Método responsavel por retornar a URI desconsiderando o prefixo
      * @return string
      */
-    private function getUri()
+    private function getUri(): string
     {
         //URI da Request
         $uri = $this->request->getUri();
@@ -151,7 +155,7 @@ class Router
      * Método responsavel por retornar a rota atual
      * @return array
      */
-    private function getRoute()
+    private function getRoute(): array
     {
         //Retornar a URI
         $uri = $this->getUri();
@@ -169,8 +173,8 @@ class Router
                     unset($matches[0]);
 
                     //Variaveis processadas
-                    $keys                                          = $methods[$httpMethod]['variables'];
-                    $methods[$httpMethod]['variables']             = array_combine($keys, $matches);
+                    $keys                                         = $methods[$httpMethod]['variables'];
+                    $methods[$httpMethod]['variables']            = array_combine($keys, $matches);
                     $methods[$httpMethod]['variables']['request'] = $this->request;
 
                     //Retorna os parametros da rota
@@ -186,7 +190,7 @@ class Router
 
     /**
      * Método responsavel por executar a rota atual
-     * @return Response
+     * @return Queue|Response
      */
     public function run()
     {
@@ -208,8 +212,8 @@ class Router
                 $args[$name] = $route['variables'][$name] ?? '';
             }
 
-            //Retorna a Execução da função
-            return call_user_func_array($route['controller'], $args);
+            //Retorna a Execução da fila de middlewares
+            return (new Queue($route['middlewares'], $route['controller'], $args))->next($this->request);
 
         } catch (Exception $e) {
             return new Response($e->getCode(), $e->getMessage());
@@ -220,8 +224,23 @@ class Router
      * Método responsável por retornar a URL atual
      * @return string
      */
-    public function getCurrentUrl()
+    public function getCurrentUrl(): string
     {
-        return $this->url.$this->getUri();
+        return $this->url . $this->getUri();
+    }
+
+    /**
+     * Método responsavel por redirecionar a URL
+     * @param string $route
+     */
+    public function redirect(string $route)
+    {
+        //URL
+        $url = $this->url.$route;
+
+        //Executa o redirect
+        header('location: '.$url);
+        exit;
+
     }
 }
