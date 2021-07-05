@@ -41,12 +41,12 @@ class Response
     {
         $this->httpCode = $httpCode;
         $this->content = $content;
-        $this->setContentType($contentType) ;
+        $this->setContentType($contentType);
     }
 
     /**
      * Método responsavel por alterar o content type do response
-     * @param  string
+     * @param string
      */
     public function setContentType($contentType)
     {
@@ -73,8 +73,8 @@ class Response
         http_response_code($this->httpCode);
 
         //Envia Headers
-        foreach ($this->headers as $key=>$value){
-            header($key.': '.$value);
+        foreach ($this->headers as $key => $value) {
+            header($key . ': ' . $value);
         }
     }
 
@@ -85,7 +85,7 @@ class Response
     {
         $this->sendHeaders(); //Envia os Headers
 
-        switch ($this->contentType){ //Imprime o conteúdo
+        switch ($this->contentType) { //Imprime o conteúdo
             case 'text/html':
                 echo $this->content;
                 exit;

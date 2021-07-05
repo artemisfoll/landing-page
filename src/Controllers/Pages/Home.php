@@ -11,6 +11,7 @@ class Home extends Page
 
 
 	/**
+     * Método responsável por retornar o conteudo da Home
 	 * @return string
 	 */
 	public static function getHome()

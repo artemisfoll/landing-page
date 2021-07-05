@@ -21,14 +21,25 @@ services:
     links:
       - mysql
   mysql:
-    image: mysql
+    image: mysql:8.0
     container_name: mysql
     ports:
       - "33061:3306"
     volumes:
       - mysql:/var/lib/mysql/
     environment:
-      MYSQL_DATABASE: 'db_proj'
-      MYSQL_ROOT_PASSWORD: '12345'
+      MYSQL_DATABASE: "dbLanding"
+      MYSQL_ROOT_PASSWORD: "12345"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mysql:db
+    ports:
+      - "8001:80"
+    environment:
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+      MYSQL_ROOT_PASSWORD: test
+
 volumes:
   mysql:

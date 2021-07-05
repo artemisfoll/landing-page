@@ -39,8 +39,8 @@ class Router
      */
     public function __construct($url)
     {
-        $this->request = new Request();
-        $this->url = $url;
+        $this->request = new Request($this);
+        $this->url     = $url;
         $this->setPrefix();
     }
 
@@ -64,8 +64,8 @@ class Router
     private function addRoute($method, $route, $params = [])
     {
         //Validação dos Parametros
-        foreach ($params as $key=>$value){
-            if ($value instanceof Closure){
+        foreach ($params as $key => $value) {
+            if ($value instanceof Closure) {
                 $params['controller'] = $value;
                 unset($params[$key]);
                 continue;
@@ -77,13 +77,13 @@ class Router
 
         //Padrao de validação das variaveis das rotas
         $paternVariable = '/{(.*?)}/';
-        if (preg_match_all($paternVariable, $route, $matches)){
-            $route = preg_replace($paternVariable, '(.*?)',$route);
+        if (preg_match_all($paternVariable, $route, $matches)) {
+            $route               = preg_replace($paternVariable, '(.*?)', $route);
             $params['variables'] = $matches[1];
         }
 
         //Padrão de validação da URL
-        $patternRoute = '/^'.str_replace('/','\/', $route).'$/';
+        $patternRoute = '/^' . str_replace('/', '\/', $route) . '$/';
 
 
         //Adiciona a rota dentro da classe
@@ -160,18 +160,18 @@ class Router
         $httpMethod = $this->request->getHttpMethod();
 
         //valida as rotas
-        foreach ($this->routes as $patternRoute=>$methods){
+        foreach ($this->routes as $patternRoute => $methods) {
             //Verifica se a URI bate o padrão
-            if (preg_match($patternRoute, $uri, $matches)){
+            if (preg_match($patternRoute, $uri, $matches)) {
                 //Verifica o método
-                if ($methods[$httpMethod]){
+                if ($methods[$httpMethod]) {
                     //Remove a primeira posição
                     unset($matches[0]);
 
                     //Variaveis processadas
-                    $keys = $methods[$httpMethod]['variables'];
-                    $methods[$httpMethod]['variables'] = array_combine($keys, $matches);
-                    $methods[$httpMethod]['variables']['resquest'] = $this->request;
+                    $keys                                          = $methods[$httpMethod]['variables'];
+                    $methods[$httpMethod]['variables']             = array_combine($keys, $matches);
+                    $methods[$httpMethod]['variables']['request'] = $this->request;
 
                     //Retorna os parametros da rota
                     return $methods[$httpMethod];
@@ -194,7 +194,7 @@ class Router
             $route = $this->getRoute();
 
             //Verifica o Controlador
-            if (!isset($route['controller'])){
+            if (!isset($route['controller'])) {
                 throw new Exception('A URL nao pode ser processada', 500);
             }
 
@@ -203,16 +203,25 @@ class Router
 
             //Reflection
             $reflection = new ReflectionFunction($route['controller']);
-            foreach ($reflection->getParameters() as $parameter){
-                $name = $parameter->getName();
+            foreach ($reflection->getParameters() as $parameter) {
+                $name        = $parameter->getName();
                 $args[$name] = $route['variables'][$name] ?? '';
             }
 
             //Retorna a Execução da função
             return call_user_func_array($route['controller'], $args);
 
-        }catch (Exception $e){
+        } catch (Exception $e) {
             return new Response($e->getCode(), $e->getMessage());
         }
+    }
+
+    /**
+     * Método responsável por retornar a URL atual
+     * @return string
+     */
+    public function getCurrentUrl()
+    {
+        return $this->url.$this->getUri();
     }
 }

@@ -4,50 +4,79 @@ namespace Src\Http;
 
 class Request
 {
-	/**
-	 * Método HTTP da requisição
-	 * @var string
-	 */
-	private $httpMethod;
+    /**
+     * nstancia do Router
+     * @var Router
+     */
+    private $router;
 
-	/**
-	 * URI da página
-	 * @var string
-	 */
-	private $uri;
+    /**
+     * Método HTTP da requisição
+     * @var string
+     */
+    private $httpMethod;
 
-	/**
-	 * Parâmetros da URL ($_GET)
-	 * @var array
-	 */
-	private $queryParams = [];
+    /**
+     * URI da página
+     * @var string
+     */
+    private $uri;
 
-	/**
-	 * Variáveis recebidos no POST da página ($_POST)
-	 * @var array
-	 */
-	private $postVars = [];
+    /**
+     * Parâmetros da URL ($_GET)
+     * @var array
+     */
+    private $queryParams = [];
 
-	/**
-	 * Cabeçalho da requisição
-	 * @var array
-	 */
-	private $headers = [];
+    /**
+     * Variáveis recebidos no POST da página ($_POST)
+     * @var array
+     */
+    private $postVars = [];
 
-	public function __construct()
-	{
-		$this->queryParams = $_GET ?? [];
-		$this->postVars    = $_POST ?? [];
-		$this->headers  = getallheaders();
-		$this->httpMethod  = $_SERVER['REQUEST_METHOD'];
-		$this->uri         = $_SERVER['REQUEST_URI'];
-	}
+    /**
+     * Cabeçalho da requisição
+     * @var array
+     */
+    private $headers = [];
+
+    public function __construct($router)
+    {
+        $this->router      = $router;
+        $this->queryParams = $_GET ?? [];
+        $this->postVars    = $_POST ?? [];
+        $this->headers     = getallheaders();
+        $this->httpMethod  = $_SERVER['REQUEST_METHOD'] ?? '';
+        $this->setUri();
+    }
+
+    /**
+     * Método responsavel por definir a URL
+     */
+    private function setUri()
+    {
+        //URI completa com GETS
+        $this->uri = $_SERVER['REQUEST_URI'] ?? '';
+
+        //Remove GETS da URI
+        $xURI = explode('?', $this->uri);
+        $this->uri = $xURI[0];
+    }
+
+    /**
+     * Método responsavel por retornar a instancia de Router
+     * @return Router
+     */
+    public function getRouter()
+    {
+        return $this->router;
+    }
 
     /**
      * Método responsavel por retornar o método http da requisição
      * @return string
      */
-	public function getHttpMethod()
+    public function getHttpMethod()
     {
         return $this->httpMethod;
     }
@@ -56,7 +85,7 @@ class Request
      * Método responsavel por retornar a URI da requisição
      * @return string
      */
-	public function getUri()
+    public function getUri()
     {
         return $this->uri;
     }
@@ -65,7 +94,7 @@ class Request
      * Método responsavel por retornar os Headers da requisição
      * @return array
      */
-	public function getHeaders()
+    public function getHeaders()
     {
         return $this->headers;
     }
@@ -74,7 +103,7 @@ class Request
      * Método responsavel por retornar os parametros da URL da requisição
      * @return array
      */
-	public function getQueryParams()
+    public function getQueryParams()
     {
         return $this->queryParams;
     }
@@ -83,7 +112,7 @@ class Request
      * Método responsavel por retornar as variaveis POST da requisição
      * @return array
      */
-	public function getPostVars()
+    public function getPostVars()
     {
         return $this->postVars;
     }
