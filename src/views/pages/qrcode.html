@@ -1,0 +1,50 @@
+<h1>Gerar QrCode</h1>
+<hr>
+
+<section id="testimonies">
+    {{name}}
+
+</section>
+<hr>
+<div class="row">
+    <div class="col-6">
+        <sectiom id="form">
+            <h3>
+                Gere seu QrCode
+            </h3>
+            <form method="get">
+                <div class="form-group row">
+                    <div class="col-12">
+                        <label for="texto">Texto/Link</label>
+                        <input type="text" class="form-control" name="texto" id="texto" required>
+                    </div>
+                    <div class="col-6 mt-2">
+                        <label for="tamanho">Tamanho</label>
+                        <input type="text" class="form-control" name="tamanho" id="tamanho" required>
+                    </div>
+                    <div class="col-6 mt-2">
+                        <label for="qualidade">Qualidade</label>
+                        <select name="qualidade" id="qualidade" class="form-control">
+                            <option value="L">L</option>
+                            <option value="M">M</option>
+                            <option value="Q">Q</option>
+                            <option value="H">H</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <label for="enviar" style="visibility: hidden">enviar</label>
+                        <button type="submit" class="btn btn-outline-success form-control" name="enviar" id="enviar">Enviar</button>
+                    </div>
+                </div>
+            </form>
+        </sectiom>
+    </div>
+    <div class="col-6">
+        <section>
+            {{urlqr}}
+        </section>
+    </div>
+
+</div>
+
+

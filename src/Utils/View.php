@@ -14,7 +14,7 @@ class View
      * Método responsável por definir os dados iniciais da classe
      * @param array $vars
      */
-    public static function init($vars = [])
+    public static function init(array $vars = [])
     {
         self::$vars = $vars;
     }
@@ -24,7 +24,7 @@ class View
      * @param string $view
      * @return string
      */
-    private static function getContentView($view)
+    private static function getContentView(string $view): string
     {
         $file = __DIR__ . "/../views/" . $view . ".html";
         return file_exists($file) ? file_get_contents($file) : '';
@@ -36,7 +36,7 @@ class View
      * @param array $vars (string/numeric)
      * @return string
      */
-    public static function render($view, $vars = [])
+    public static function render(string $view, array $vars = []): string
     {
         $contentView = self::getContentView($view); //conteúdo da view
 

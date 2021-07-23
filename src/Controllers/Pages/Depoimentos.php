@@ -69,7 +69,7 @@ class Depoimentos extends Page
      * @param Request $request
      * @return string
      */
-	public static function insertTestimony($request): string
+	public static function insertTestimony(Request $request): string
     {
         //Dados do post
 	    $postVars = $request->getPostVars();

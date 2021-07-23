@@ -7,8 +7,9 @@
 	},
 	"require": {
 		"william-costa/dot-env": "^0.1.0",
-		"william-costa/database-manager": "^0.1.0"
-	},
+		"william-costa/database-manager": "^0.1.0",
+      	"ext-pdo": "*"
+    },
 	"require-dev": {
 	        "squizlabs/php_codesniffer": "3.*"
 	    }

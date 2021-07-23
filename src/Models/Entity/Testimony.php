@@ -3,6 +3,7 @@
 
 namespace Src\Models\Entity;
 
+use PDOStatement;
 use WilliamCosta\DatabaseManager\Database;
 
 
@@ -54,12 +55,12 @@ class Testimony
 
     /**
      * Método responsável por retornar Depoimentos
-     * @param string $where
-     * @param string $order
-     * @param string $limit
+     * @param string|null $where
+     * @param string|null $order
+     * @param string|null $limit
      * @param PDOStatement $fields
      */
-    public static function getTestimonies($where = null, $order = null, $limit = null, $fields = '*')
+    public static function getTestimonies(string $where = null, string $order = null, string $limit = null, $fields = '*')
     {
         return (new Database('depoimentos'))->select($where, $order, $limit, $fields);
     }

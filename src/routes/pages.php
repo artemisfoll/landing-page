@@ -31,11 +31,10 @@ $obRouter->post('/depoimentos', [
     }
 ]);
 
+//Rota QrCode
+$obRouter->get('/qrcode', [
+    function ($request) {
+        return new Response(200, Pages\Qrcode::getQrCode($request));
+    }
+]);
 
-
-////Rota Dinamica
-//$obRouter->get('/pagina/{idPagina}/{acao}', [
-//    function($idPagina, $acao){
-//        return new Response(200, 'Página '.$idPagina.' - '. $acao);
-//    }
-//]);
