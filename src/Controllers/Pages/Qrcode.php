@@ -14,12 +14,13 @@ class Qrcode extends Page
      */
     public static function getQrCode(Request $request): string
     {
-        $qrInfo = $request->getQueryParams();
+        $qrInfo = $request->getPostVars();
 
         $obQrcode          = new QrCodeModel();
         $obQrcode->content = $qrInfo['texto'];
         $obQrcode->height  = $qrInfo['tamanho'];
         $obQrcode->size    = $qrInfo['qualidade'];
+        $obQrcode->clean = $qrInfo['clean'];
 
         $content = View::render('pages/qrcode', [
             'urlqr' => $obQrcode->getUrl()

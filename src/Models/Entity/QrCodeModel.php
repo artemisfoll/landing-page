@@ -41,6 +41,11 @@ class QrCodeModel
      */
     public $url;
 
+    /**
+     * @var bool
+     */
+    public $clean;
+
     public function getUrl(): string
     {
 
@@ -49,14 +54,19 @@ class QrCodeModel
         $size    = $this->size;
         $type    = "qr";
         $encode  = "UTF-8";
+        $clean = $this->clean;
 
-        if (!isset($content)){
+        if (!isset($content) || $clean == "true"){
             return "Aguardando";
+        } elseif (empty($content)){
+            return "Adicione Texto";
         }
+
         $url = $this->url = "https://chart.googleapis.com/chart?chs=".$height."x".$height."&cht=".$type."&chl=".$content."&choe=".$encode."&chld=".$size;
         $frame = "<iframe src='$url' frameborder='0' width='100%' height='400px'></iframe>";
         return $frame;
     }
+
 
 
 }

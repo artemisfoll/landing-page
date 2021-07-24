@@ -12,28 +12,38 @@
             <h3>
                 Gere seu QrCode
             </h3>
-            <form method="get">
+            <form method="post">
                 <div class="form-group row">
                     <div class="col-12">
                         <label for="texto">Texto/Link</label>
-                        <input type="text" class="form-control" name="texto" id="texto" required>
+                        <input type="text" class="form-control" name="texto" id="texto">
                     </div>
                     <div class="col-6 mt-2">
                         <label for="tamanho">Tamanho</label>
-                        <input type="text" class="form-control" name="tamanho" id="tamanho" required>
+                        <select name="tamanho" id="tamanho" class="form-control">
+                            <option value="100">100px</option>
+                            <option value="150">150px</option>
+                            <option value="200">200px</option>
+                            <option value="300">300px</option>
+                        </select>
                     </div>
                     <div class="col-6 mt-2">
                         <label for="qualidade">Qualidade</label>
                         <select name="qualidade" id="qualidade" class="form-control">
-                            <option value="L">L</option>
-                            <option value="M">M</option>
-                            <option value="Q">Q</option>
-                            <option value="H">H</option>
+                            <option value="L">Low</option>
+                            <option value="M">Medium</option>
+                            <option value="Q">High</option>
                         </select>
                     </div>
-                    <div class="col-2">
-                        <label for="enviar" style="visibility: hidden">enviar</label>
-                        <button type="submit" class="btn btn-outline-success form-control" name="enviar" id="enviar">Enviar</button>
+                    <div class="col-2 mt-3">
+                        <button type="submit" class="btn btn-outline-success form-control" name="enviar" id="enviar">
+                            Enviar
+                        </button>
+                    </div>
+                    <div class="col-2 mt-3">
+                        <button type="submit" class="btn btn-outline-danger form-control" name="clean" id="clean" value="true">
+                            limpar
+                        </button>
                     </div>
                 </div>
             </form>
