@@ -1,7 +1,8 @@
 <?php
 
-require_once __DIR__. '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
+use Src\Http\Middleware\Api;
 use Src\Http\Middleware\Maintenance;
 use Src\Http\Middleware\Queue;
 use Src\Http\Middleware\RequireAdminLogin;
@@ -12,7 +13,7 @@ use WilliamCosta\DatabaseManager\Database;
 
 
 //Carrega variaveis de ambiente
-Environment::load(__DIR__.'/../');
+Environment::load(__DIR__ . '/../');
 
 //Define as configurações de banco de dados
 Database::config(
@@ -33,9 +34,10 @@ View::init([
 
 //Define o mapeamento de middlewares
 Queue::setMap([
-    'maintenance' => Maintenance::class,
+    'maintenance'           => Maintenance::class,
     'required-admin-logout' => RequireAdminLogout::class,
-    'required-admin-login' => RequireAdminLogin::class
+    'required-admin-login'  => RequireAdminLogin::class,
+    'api'                   => Api::class
 ]);
 
 //Define o mapeamento de middlewares Padrões (todas as rotas)

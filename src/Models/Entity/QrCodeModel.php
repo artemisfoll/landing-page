@@ -62,7 +62,7 @@ class QrCodeModel
             return "Adicione Texto";
         }
 
-        $url = $this->url = "https://chart.googleapis.com/chart?chs=".$height."x".$height."&cht=".$type."&chl=".$content."&choe=".$encode."&chld=".$size;
+        $url = $this->url = "https://chart.googleapis.com/chart?chs=".$height."x".$height."&cht=".$type."&chl=".$content."&choe=".$encode."&chld=L";
         $frame = "<iframe src='$url' frameborder='0' width='100%' height='400px'></iframe>";
         return $frame;
     }

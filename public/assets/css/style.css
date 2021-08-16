@@ -1,16 +1,16 @@
-body{
+.body{
     display: grid;
     grid-template-columns: 200px 1fr;
     grid-template-rows: 64px 1fr 64px;
     grid-template-areas:
-            "header header"
+            "sidebar header"
             "sidebar content"
             "sidebar footer";
     height: 100vh;
     margin: 0;
-    background-color: #dddddd;
+    background-color: #2b2b36;
 }
-body.hide-sidebar{
+.body.hide-sidebar{
     grid-template-columns: 1fr;
     grid-template-areas:
         "header"
@@ -33,12 +33,15 @@ aside.sidebar {
     align-items: center;
     grid-area: sidebar;
     box-shadow: -5px 0px 25px 1px rgba(0,0,0,.4);
-    background-color: #121d2f;
+    background-color: #19253a;
 }
 main.content {
     grid-area: content;
 }
 main.content table{
-    color: #0c1928;
+    color: #19243b;
     width: 100%;
+}
+.login {
+    grid-area: content;
 }

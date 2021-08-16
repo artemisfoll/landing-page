@@ -3,8 +3,6 @@
 use \Src\Http\Response;
 use \Src\Controllers\Pages;
 
-$obRouter = '';
-
 //Rota da Home
 $obRouter->get('/', [
     function () {

@@ -35,6 +35,12 @@ class Router
     private $request;
 
     /**
+     * Content Type padrão do response
+     * @var string
+     */
+    private $contentType = 'text/html';
+
+    /**
      * Método responsavel por iniciar a classe
      * @param string $url
      */
@@ -43,6 +49,15 @@ class Router
         $this->request = new Request($this);
         $this->url     = $url;
         $this->setPrefix();
+    }
+
+    /**
+     * Método responsável por alterar o valor do content type
+     * @param $contentType
+     */
+    public function setContentType($contentType)
+    {
+        $this->contentType = $contentType;
     }
 
     /**
@@ -148,7 +163,7 @@ class Router
         $xUri = strlen($this->prefix) ? explode($this->prefix, $uri) : [$uri];
 
         //Retorna a URI sem o prefixo
-        return end($xUri);
+        return rtrim(end($xUri));
     }
 
     /**
@@ -216,7 +231,27 @@ class Router
             return (new Queue($route['middlewares'], $route['controller'], $args))->next($this->request);
 
         } catch (Exception $e) {
-            return new Response($e->getCode(), $e->getMessage());
+            return new Response($e->getCode(), $this->getErrorMessage($e->getMessage()), $this->contentType);
+        }
+    }
+
+    /**
+     * Método respensável por retornar a mensagem de erro de acordo com o content type
+     * @param string $message
+     * @return mixed
+     */
+    private function getErrorMessage(string $message)
+    {
+        switch ($this->contentType){
+            case 'application/json':
+                return [
+                    'error' => $message
+                ];
+                break;
+
+            default:
+                return $message;
+                break;
         }
     }
 
